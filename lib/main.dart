@@ -4,12 +4,14 @@ import 'package:quick_eats/app/app.dialogs.dart';
 import 'package:quick_eats/app/app.locator.dart';
 import 'package:quick_eats/app/app.router.dart';
 import 'package:stacked_services/stacked_services.dart';
+import 'services/snackbar_service.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await setupLocator();
   setupDialogUi();
   setupBottomSheetUi();
+  setupSnackbarUi();
   runApp(const MainApp());
 }
 

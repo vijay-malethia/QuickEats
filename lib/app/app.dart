@@ -4,22 +4,29 @@ import 'package:quick_eats/ui/views/home/home_view.dart';
 import 'package:quick_eats/ui/views/startup/startup_view.dart';
 import 'package:stacked/stacked_annotations.dart';
 import 'package:stacked_services/stacked_services.dart';
+import 'package:quick_eats/ui/views/auth/auth_view.dart';
+import 'package:quick_eats/services/restaurant_service.dart';
 // @stacked-import
 
 @StackedApp(
   routes: [
     MaterialRoute(page: HomeView),
     MaterialRoute(page: StartupView),
-    // @stacked-route
+    MaterialRoute(page: AuthView),
+// @stacked-route
   ],
   dependencies: [
     LazySingleton(classType: BottomSheetService),
     LazySingleton(classType: DialogService),
     LazySingleton(classType: NavigationService),
-    // @stacked-service
+    LazySingleton(classType: RestaurantService),
+    LazySingleton(classType: SnackbarService),
+
+// @stacked-service
   ],
   bottomsheets: [
     StackedBottomsheet(classType: NoticeSheet),
+
     // @stacked-bottom-sheet
   ],
   dialogs: [

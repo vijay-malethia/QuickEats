@@ -1,8 +1,9 @@
+import 'package:stacked/stacked.dart';
 import 'package:flutter/material.dart';
+
+//
 import 'package:quick_eats/ui/common/ui_helpers.dart';
 import 'package:quick_eats/ui/widgets/star_rating.dart';
-import 'package:stacked/stacked.dart';
-
 import 'home_viewmodel.dart';
 
 class HomeView extends StackedView<HomeViewModel> {

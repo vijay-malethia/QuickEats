@@ -14,15 +14,15 @@ import 'package:quick_eats/services/restaurant_service.dart';
 import 'package:stacked_services/stacked_services.dart';
 
 class HomeViewModel extends BaseViewModel {
-  final _dialogService = locator<DialogService>();
+  final DialogService _dialogService = locator<DialogService>();
   final RestaurantService _restaurantService = locator<RestaurantService>();
   final SnackbarService _snackbarService = locator<SnackbarService>();
 
   int starRating = -1;
 
+  // Select star for restaurant rating
   void onStarRatingChange(int value) {
     starRating = value + 1;
-
     rebuildUi();
   }
 
@@ -34,6 +34,7 @@ class HomeViewModel extends BaseViewModel {
     });
   }
 
+  // To show dialog for rating
   void showDialog(int id) async {
     var res = await _dialogService.showCustomDialog(
       variant: DialogType.infoAlert,
@@ -47,6 +48,7 @@ class HomeViewModel extends BaseViewModel {
     }
   }
 
+  // To show snackbar when rating is submitted
   void showSnackBar() {
     _snackbarService.showSnackbar(
       message: 'Thankyou for your feedback! Your rating has been updated',
@@ -66,7 +68,7 @@ class HomeViewModel extends BaseViewModel {
       var res = await _restaurantService.getRestaurants();
       if (res.statusCode == 200) {
         restaurantList = jsonDecode(res.data);
-        if (!doesExist) await saveToJSON(restaurants: restaurantList);
+        if (!doesExist) await saveJsonToLocal(restaurants: restaurantList);
         ratingList = await readJsonFile();
         notifyListeners();
       }
@@ -77,7 +79,8 @@ class HomeViewModel extends BaseViewModel {
     }
   }
 
-  saveToJSON({required List restaurants}) async {
+  // Save json to local
+  Future<void> saveJsonToLocal({required List restaurants}) async {
     List<Map> json = [];
     for (var restaurant in restaurants) {
       json.add({
@@ -90,13 +93,14 @@ class HomeViewModel extends BaseViewModel {
     file.writeAsString(jsonEncode(json));
   }
 
+  // Save rating to local
   saveRating(List json) async {
     Directory directory = await getApplicationDocumentsDirectory();
     File file = File('${directory.path}localJson.json');
     file.writeAsString(jsonEncode(json));
   }
 
-  //Use this function to read json data from local file
+  // Use this function to read json data from local file
   static Future<List> readJsonFile() async {
     Directory directory = await getApplicationDocumentsDirectory();
     var input = await File('${directory.path}localJson.json').readAsString();
@@ -104,8 +108,9 @@ class HomeViewModel extends BaseViewModel {
     return map;
   }
 
+  // This function use to calculate average of rating
   int calCulateRating(index) {
-    num total = 0;
+    double total = 0;
     for (var i = 0; i < ratingList[index]['averageRating'].length; i++) {
       total = total + ratingList[index]['averageRating'][i];
     }
